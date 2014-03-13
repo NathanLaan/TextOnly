@@ -4,17 +4,21 @@
     "manifest_version": 2,
     "description": "Google Chrome Extension to remove images from web pages",
     "icons": {
-        "16" : "text.png",
-        "48" : "text.png",
-        "128" : "text.png"
+        "16" : "image.png",
+        "48" : "image.png",
+        "128" : "image.png"
     },
     "permissions": [
         "tabs",
+		"storage",
+        "background",
+        "notifications",
+        "idle",
         "http://*/*",
         "https://*/*"
     ],
     "browser_action": {
-        "default_icon": "text.png", 
+        "default_icon": "image.png", 
         "default_title": "TextOnly",
         "default_popup": "popup.html"
     },

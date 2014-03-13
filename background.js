@@ -1,9 +1,12 @@
 //
+// TextOnly
+//
 // chrome.storage.local Keys:
 //
 // TextOnlySiteList
-//
 // TextOnlyOptions
+//
+// TextOnlyOptions_Enabled
 //
 
 
@@ -34,26 +37,29 @@ init(function(){
 //
 //
 //
-function setEnabled(enabled){
-	chrome.storage.local.get('TextOnlyOptions', function(result){
-		if(result.TextOnlyOptions !== undefined){
-		}else{
-			// TODO: debug
-		}
-	});
+function setTextOnlyModeEnabled(enabled){
+	localStorage["TextOnlyOptions_Enabled"] = enabled;
+	toggleIcon();
+}
+function getTextOnlyModeEnabled(){
+	return localStorage["TextOnlyOptions_Enabled"] === "true";
 }
 
 
 
-function toggleIcon(callback){
-	chrome.storage.local.get('TextOnlyOptions', function(result){
-		if(result.TextOnlyOptions !== undefined){
-		}else{
-			// TODO: debug
-		}
+function toggleIcon(){
+	if(getTextOnlyModeEnabled()){
+		chrome.browserAction.setIcon({'path':'image_delete.png'});
+	}else{
+		chrome.browserAction.setIcon({'path':'image.png'});
+	}
+	chrome.storage.local.get('TextOnlyOptions_Enabled', function(result){
+		console.log("-------DEBUG-------");
+		console.log(result);
+		console.log(JSON.stringify(result));
+		console.log(result.TextOnlyOptions_Enabled);
 	});
 }
-
 
 
 //
@@ -62,7 +68,6 @@ function toggleIcon(callback){
 //
 //
 function process(){
-
 }
 
 
@@ -79,12 +84,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		+ "  ACTION: " + (request.action == null ?  + "null" : request.action));
 
 	if(request.action == "DEBUG"){
-		chrome.storage.local.get('TextOnlyOptions', function(result){	
+		chrome.storage.local.get('TextOnlyOptions', function(result){
 			console.log("-------DEBUG-------");
 			console.log(result);
-			console.log("-------DEBUG-------");
 		});
 	}	
+	else if(request.action == "EnableTextOnly"){
+		setTextOnlyModeEnabled(true);
+	}
 	return true;
 });
 
